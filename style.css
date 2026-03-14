@@ -1,3 +1,196 @@
+/* global css */
+
+body , html{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    touch-action: none;
+}
+
+/* game css */
+
+/*              home screen                  */
+
+#home-screen{
+    height: 100dvh;
+    background-color: aquamarine;
+    display: flex;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+.top-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 20px 0 20px;
+
+}
+#setting-button{
+    background: none;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+
+}
+.centre-content{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.game-title{
+    margin: 0;
+    font-size: 40px;
+    color: bisque;
+    letter-spacing: 2px;
+}
+.theme-slider{
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    padding: 20px 0;
+    scrollbar-width: none;
+   
+}
+
+.theme-slider::-webkit-scrollbar{
+    display: none;
+}
+
+.theme-card{
+    min-width: 60vw;
+    height: 60vw;
+    max-width: 250px;
+    max-height: 250px;
+    margin: 0 50%;
+    scroll-snap-align: center;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+    box-shadow: 0 8px 16px rgb(149, 52, 52);
+    flex-shrink: 0;
+
+}
+#theme-clasic{
+    background-image: url('sample.jpeg');
+}
+
+.swip-text{
+    margin-top: 15px;
+    font-size: 14px;
+    color: rgb(143, 96, 35);
+    font-weight: bold;
+}
+.bottom-bar{
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+.primery-button{
+    background-color: red;
+    color: white;
+    border: none;
+    width: 80%;
+    max-width: 300px;
+    padding: 20PX;
+    font-size: 24PX;
+    font-weight: bold;
+    border-radius: 30px;
+    margin-bottom: 40px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px red;
+}
+
+.primery-button:active{
+    transform: scale(0.95);
+}
+
+.slider-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.slider-btn{
+    display: none;background-color: blueviolet;
+    color: white;
+    border: none;
+    font-size: 30px;
+    padding: 15px 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    position: absolute;
+    z-index: 10;
+    transition: background-color 0.2s;
+}
+.slider-btn:hover{
+    background-color: chartreuse;
+}
+
+#prev-btn{left: 15%;}
+#next-btn{right: 15%;}
+
+@media(min-width : 768px){
+    .slider-btn{
+        display: block;
+    }
+    .theme-card{
+        min-width: 40vw;
+        min-height: 60hw;
+        max-width: 250px;
+        max-height: 250px;
+        margin: 0 50%;
+    }
+}
+
+
+
+ /*                 level scren              */
+
+
+
+#level-screen{
+    height: 100dvh;
+    background-color: aquamarine;
+    display: none;
+    flex-direction: column;
+    font-family: sans-serif;
+}
+
+.levelbox{
+    padding: 20px;
+    margin: 10px;
+    background-color: white;
+    border: 2px solid goldenrod;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+
+
+
+
+/*              game scerrn                */
+
+#game-screen{
+    flex-direction: column;
+    height: 100dvh;
+    background-color: aquamarine;
+    display: none;
+}
+
 #grid{
     background-color: aquamarine;
     display: grid;
@@ -14,14 +207,45 @@
     background-color: bisque;
     border-radius: 6px;
 }
-#game-screen{
+
+
+
+/* older code  */
+/* 
+#grid{
+    background-color: aquamarine;
+    display: grid;
+    grid-template-columns: repeat(5,60px);
+    grid-template-rows: repeat(5,60px);
+    gap: 5px;
+    touch-action: none;
+}
+
+.cell{
+    width: 60px;
+    height: 60px;
+
+    background-color: bisque;
+    border-radius: 6px;
+} */
+
+
+/* #game-screen{
     flex-direction: column;
-    height: 100vh;
+    height: 100dvh;
     background-color: rgb(219, 176, 120);
     display: none;
 }
-#home-screen{
+ */
+
+
+
+/* 
+old home screen */
+
+
+/* #home-screen{
     flex-direction: column;
     height: 100vh;
     background-color: rgb(219, 176, 120);
-}
+} */
