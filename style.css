@@ -1,0 +1,27 @@
+#grid{
+    background-color: aquamarine;
+    display: grid;
+    grid-template-columns: repeat(5,60px);
+    grid-template-rows: repeat(5,60px);
+    gap: 5px;
+    touch-action: none;
+}
+
+.cell{
+    width: 60px;
+    height: 60px;
+
+    background-color: bisque;
+    border-radius: 6px;
+}
+#game-screen{
+    flex-direction: column;
+    height: 100vh;
+    background-color: rgb(219, 176, 120);
+    display: none;
+}
+#home-screen{
+    flex-direction: column;
+    height: 100vh;
+    background-color: rgb(219, 176, 120);
+}
