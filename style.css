@@ -1,3 +1,31 @@
+/*                     theme engien           */
+
+:root{
+    --bg-color: #e0e0e0;
+    --cell-bg:#000000;
+    --text-color:#ffffff
+}
+
+[data-theme="wood"]{
+    --bg-color:#f5ffdc;
+    --cell-bg:#8b4513;
+    --text-color:#ffffff;
+}
+[data-theme="ice"]{
+    --bg-color:#e0f7fa;
+    --cell-bg:#0288d1;
+    --text-color:#ffffff;
+}
+
+/* [data-theme="wood"]{
+    --bg-color:
+    --cell-bg:
+    --text-color:
+} */
+
+
+
+
 /* global css */
 
 body , html{
@@ -187,12 +215,12 @@ body , html{
 #game-screen{
     flex-direction: column;
     height: 100dvh;
-    background-color: aquamarine;
+    background-color: var(--bg-color);
     display: none;
 }
 
 #grid{
-    background-color: aquamarine;
+    background-color: var(--bg-color);
     display: grid;
     grid-template-columns: repeat(5,60px);
     grid-template-rows: repeat(5,60px);
@@ -204,7 +232,8 @@ body , html{
     width: 60px;
     height: 60px;
 
-    background-color: bisque;
+    background-color: var(--cell-bg);
     border-radius: 6px;
+    color: var(--text-color);
 }
 

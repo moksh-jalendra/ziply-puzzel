@@ -239,3 +239,27 @@ function backhome(){
 
 
 
+//           theme logic 
+
+function selectTheme(themename){
+    if(themename == "wood" || themename == 'ice'){
+        if (unlockedlevel<3){
+            alert('coplete your level')
+            return
+        }
+
+    }
+    if(themename == 'clasic'){
+        document.body.removeAttribute("data-theme")
+
+    }else{
+        document.body.dataset.theme = themename
+    }
+
+    localStorage.setItem('zipTheme' , themename)
+}
+
+let savedTheme = localStorage.getItem('zipTheme')
+if(savedTheme){
+    selectTheme(savedTheme)
+}
