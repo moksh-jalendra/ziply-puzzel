@@ -10,15 +10,32 @@
     <div id="home-screen">
         <div class="top-bar">
             <h1>ziply puzzel</h1>
+            <div class="coin-display">⭐ <span id="coin-count">0</span></div>
             <button id="setting-button">⚙️</button>
         </div>
         <div class="centre-content">
+            
             <div class="slider-container">
                 <button class="slider-btn" id="prev-btn" onclick="slideTheme(-1)"> '<' </button>
                 <div class="theme-slider" id="theme-slider">
-                    <div class="theme-card" onclick="selectTheme('classic')" id="theme-clasic">  clasic</div>
-                    <div class="theme-card" onclick="selectTheme('wood')" id="theme-wood"> wood </div>
-                    <div class="theme-card" onclick="selectTheme('ice')" id="theme-ice"> ice  </div>
+                    <div class="theme-card" id="theme-clasic">  clasic
+                        <button class="theme-btn" onclick="handleTheme('clasic')">selected</button>
+                    </div>
+                    <div class="theme-card" id="theme-wood"> wood
+                        <button class="theme-btn" onclick="handleTheme('wood')">Unlock 5 ⭐</button>
+                    </div>
+                    <div class="theme-card" id="theme-ice"> ice 
+                        <button class="theme-btn" onclick="handleTheme('ice')">Lvl 3 Req</button> 
+
+                    </div>
+                    <div class="theme-card" id="theme-glass"> glass
+                        <button class="theme-btn" onclick="handleTheme('glass')">Unlock 15 ⭐</button>  
+
+                    </div>
+                    <div class="theme-card" id="theme-paper"> papre
+                        <button class="theme-btn" onclick="handleTheme('papre')">login for 7 days</button>  
+
+                    </div>
                 </div>
                 <button class="slider-btn" id="next-btn" onclick="slideTheme(1)"> '>' </button>
                 

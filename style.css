@@ -1,4 +1,5 @@
 /*                     theme engien           */
+/*                     theme engien           */
 
 :root{
     --bg-color: #e0e0e0;
@@ -17,6 +18,17 @@
     --text-color:#ffffff;
 }
 
+[data-theme="glass"]{
+    --bg-color:#f0f8ff;
+    --cell-bg:rgba(255, 255, 255, 0.4);
+    --text-color:#333;
+}
+[data-theme="paper"]{
+    --bg-color:#fdf5e6;
+    --cell-bg:#ece0d1;
+    --text-color:#2f4f4f;
+    border: 2px dashed #a0522d;
+}
 /* [data-theme="wood"]{
     --bg-color:
     --cell-bg:
@@ -35,9 +47,13 @@ body , html{
     touch-action: none;
 }
 
+
 /* game css */
 
-/*              home screen                  */
+
+
+/*  ###################   home screen  #########                */
+/*  ###################   home screen  #########                */
 
 #home-screen{
     height: 100dvh;
@@ -104,8 +120,25 @@ body , html{
     font-weight: bold;
     box-shadow: 0 8px 16px rgb(149, 52, 52);
     flex-shrink: 0;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
 
 }
+
+.theme-btn{
+    background-color: #333;
+    color: wheat;
+    border: none;
+    padding: 10px 20px ;
+    font-size: 16px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.theme-btn:active{
+    transform: scale(0.95);
+}
+
 #theme-clasic{
     background-image: url('sample.jpeg');
 }
@@ -206,11 +239,20 @@ body , html{
     text-align: center;
 }
 
+ /* coin */
+.coin-display{
+    font-size: 24px;
+    font-weight: bold;
+    background: rgba(0,0,0,0.1);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
 
 
 
 
-/*              game scerrn                */
+/* #################       game scerrn      #########################    */
+/* #################       game scerrn      #########################    */
 
 #game-screen{
     flex-direction: column;

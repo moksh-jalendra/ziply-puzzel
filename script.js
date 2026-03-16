@@ -1,3 +1,4 @@
+
 //                localStorage feture
 
 let unlockedlevel = localStorage.getItem('zipProgress')
@@ -8,6 +9,18 @@ if (unlockedlevel === null){
     unlockedlevel = parseInt(unlockedlevel)
 }
 
+let purchasedThemes = localStorage.getItem("zipInventory")
+if(purchasedThemes===null){
+    purchasedThemes = ['clasic']
+}else{
+    purchasedThemes = JSON.parse(purchasedThemes)
+}
+
+
+
+let coins = localStorage.getItem('zipCoins')
+coins = coins === null ? 0 : parseInt(coins)
+document.getElementById('coin-count').innerText = coins
 
 //   some variables 
 let path = []
@@ -26,18 +39,34 @@ const levels ={
     ],
     level2 :
     [
-        1,0,0,0,2,
-        0,0,0,0,0,
+        0,0,0,0,2,
+        0,1,0,0,0,
         0,0,3,0,0,
-        0,0,0,0,6,
-        4,0,0,0,5
+        0,5,0,0,6,
+        4,0,0,0,0
     ],
     level3 :
     [
         1,0,0,0,2,
         0,0,0,0,0,
-        6,0,3,0,0,
+        0,0,3,0,0,
         5,0,0,0,0,
+        0,0,0,0,4
+    ],
+    level4 :
+    [
+        0,0,0,0,2,
+        0,0,0,0,0,
+        0,0,3,0,0,
+        5,0,0,0,0,
+        4,0,1,0,0
+    ],
+    level5 :
+    [
+        0,0,0,0,2,
+        0,0,0,0,0,
+        6,0,3,0,0,
+        5,0,0,1,0,
         4,0,0,0,0
     ]
 }
@@ -185,6 +214,9 @@ function zipLogic(puzzleArry){
                     unlockedlevel++
                     localStorage.setItem('zipProgress',unlockedlevel)
                 }
+                coins+=3
+                localStorage.setItem('zipCoins',coins)
+                document.getElementById('coin-count').innerText= coins
                 selectedLevelkey = "level" + unlockedlevel
                 OpenLevelPage()
             }
@@ -241,25 +273,112 @@ function backhome(){
 
 //           theme logic 
 
-function selectTheme(themename){
-    if(themename == "wood" || themename == 'ice'){
-        if (unlockedlevel<3){
-            alert('coplete your level')
+// function selectTheme(themename){
+//     if(themename == "wood" || themename == 'ice'){
+//         if (unlockedlevel<3){
+//             alert('coplete your level')
+//             return
+//         }
+
+//     }
+//     if(themename == 'clasic'){
+//         document.body.removeAttribute("data-theme")
+
+//     }else{
+//         document.body.dataset.theme = themename
+//     }
+
+//     localStorage.setItem('zipTheme' , themename)
+// }
+
+// let savedTheme = localStorage.getItem('zipTheme')
+// if(savedTheme){
+//     selectTheme(savedTheme)
+// }
+
+
+
+// themee store and selection logic
+
+const themeCost = {wood : 5 , glass : 15 }
+
+function handleTheme(themeName){
+    if(themeName == 'ice'){
+        if(unlockedlevel < 3 ){
+            alert('you must reach level 3 ')
             return
         }
-
+        applyTheme(themeName)
+        localStorage.setItem('ziptheme' , themeName)
+        return
     }
-    if(themename == 'clasic'){
-        document.body.removeAttribute("data-theme")
+    if(purchasedThemes.includes(themeName)){
+        applyTheme(themeName)
+        localStorage.setItem('ziptheme' , themeName)
+        return
+    }
+
+    let cost = themeCost[themeName]
+
+    if(coins >= cost){
+        let confirmBuy = confirm(`do you want to spend ${cost} to unlock ${themeName}`)
+        if(confirmBuy){
+            coins -= cost
+            localStorage.setItem("zipCoins",coins)
+            document.getElementById("coin-count").innerText = coins
+
+            purchasedThemes.push(themeName)
+            localStorage.setItem("zipInventory", JSON.stringify(purchasedThemes))
+
+            alert(`yo unlocked ${themeName}` )
+        }
+    }else{
+        alert(`you need ${cost}`)
+    }
+}
+
+
+function applyTheme(themeName){
+    if(themeName === 'clasic'){
+        document.body.removeAttribute('data-theme')
+    }else{
+        document.body.dataset.theme = themeName
+    }
+
+    localStorage.setItem("zipTheme" , themeName)
+    updateThemesButtons(themeName)
+}
+
+function updateThemesButtons(activeTheme){
+    document.querySelector('#theme-clasic .theme-btn').innerText = activeTheme === 'clasic' ? "selcted" : "select"
+    let woodBtn = document.querySelector("#theme-wood .theme-btn")
+    if(purchasedThemes.includes("wood")){
+        woodBtn.innerText = activeTheme === 'wood' ? "selected" : "select"
 
     }else{
-        document.body.dataset.theme = themename
+        woodBtn.innerText = `unlock${themeCost.wood}`
     }
+    let glassBtn = document.querySelector("#theme-glass .theme-btn")
+    if(purchasedThemes.includes("glass")){
+        glassBtn.innerText = activeTheme === 'glass' ? "selected" : "select"
 
-    localStorage.setItem('zipTheme' , themename)
+    }else{
+        glassBtn.innerText = `unlock${themeCost.glass}`
+    }
+    let iceBtn = document.querySelector("#theme-ice .theme-btn")
+    if(unlockedlevel >= 3){
+        iceBtn.innerText = activeTheme === 'ice' ? "selected" : "select"
+
+    }else{
+        iceBtn.innerText = `level 3 required`
+    }
+    
 }
 
-let savedTheme = localStorage.getItem('zipTheme')
-if(savedTheme){
-    selectTheme(savedTheme)
-}
+let savedTheme = localStorage.getItem('ziptheme') || "clasic"
+applyTheme(savedTheme)
+
+
+
+
+
