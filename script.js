@@ -1,5 +1,4 @@
 
-//                localStorage feture
 
 let unlockedlevel = localStorage.getItem('zipProgress')
 
@@ -271,32 +270,6 @@ function backhome(){
 
 
 
-//           theme logic 
-
-// function selectTheme(themename){
-//     if(themename == "wood" || themename == 'ice'){
-//         if (unlockedlevel<3){
-//             alert('coplete your level')
-//             return
-//         }
-
-//     }
-//     if(themename == 'clasic'){
-//         document.body.removeAttribute("data-theme")
-
-//     }else{
-//         document.body.dataset.theme = themename
-//     }
-
-//     localStorage.setItem('zipTheme' , themename)
-// }
-
-// let savedTheme = localStorage.getItem('zipTheme')
-// if(savedTheme){
-//     selectTheme(savedTheme)
-// }
-
-
 
 // themee store and selection logic
 
@@ -312,9 +285,15 @@ function handleTheme(themeName){
         localStorage.setItem('ziptheme' , themeName)
         return
     }
+
     if(purchasedThemes.includes(themeName)){
         applyTheme(themeName)
         localStorage.setItem('ziptheme' , themeName)
+        return
+    }
+
+    if(themeName === 'paper'){
+        alert('complete your login')
         return
     }
 
@@ -331,6 +310,8 @@ function handleTheme(themeName){
             localStorage.setItem("zipInventory", JSON.stringify(purchasedThemes))
 
             alert(`yo unlocked ${themeName}` )
+            applyTheme(themeName)
+            
         }
     }else{
         alert(`you need ${cost}`)
@@ -372,11 +353,44 @@ function updateThemesButtons(activeTheme){
     }else{
         iceBtn.innerText = `level 3 required`
     }
+    let paperBtn = document.querySelector('#theme-paper .theme-btn')
+    if(purchasedThemes.includes('paper')){
+        paperBtn.innerText = activeTheme === 'paper' ? "selected" : "select"
+    }else{
+        let daysLeft = 7 - (parseInt(localStorage.getItem('zipLoginDays')) || 0)
+        paperBtn.innerText = `logins left${daysLeft}`
+    }
     
 }
 
 let savedTheme = localStorage.getItem('ziptheme') || "clasic"
 applyTheme(savedTheme)
+
+
+// daily login logic 
+
+let today = new Date().getDate
+console.log(today)
+let lastLogin = parseInt(localStorage.getItem("zipLastLogin"))
+let loginDays = parseInt(localStorage.getItem("zipLoginDays"))
+
+loginDays = loginDays === null ? 0 : parseInt(loginDays)
+if(lastLogin !== today){
+    
+    loginDays++
+    localStorage.setItem('zipLastLogin' , today)
+    localStorage.setItem("zipLoginDays",loginDays)
+    let remainDays = 8 - loginDays 
+    if(remainDays === 0){
+        purchasedThemes.push('paper')
+        localStorage.setItem("zipInventory", JSON.stringify(purchasedThemes))
+
+    }
+    
+
+    
+    
+}
 
 
 
