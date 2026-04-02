@@ -37,4 +37,4 @@ Since Ziply is built with Vanilla web technologies, there are no build steps, no
 
 1. Clone the repository:
    ```bash
-   git clone [https://github.com/moksh-jalendra/ziply-puzzel.git](https://github.com/moksh-jalendra/ziply-puzzel.git)
+   git clone https://github.com/moksh-jalendra/ziply-puzzel.git
