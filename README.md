@@ -8,7 +8,7 @@ Ziply is a lightweight, high-performance line-drawing logic puzzle game built en
 
 Connect the numbers in sequential order and fill every empty tile on the board to win.
 
-🎮 **[Play the Live Demo Here](#)** *([Add your GameMonetize or GitHub Pages link here](https://html5.gamemonetize.co/d7a965ple3vols2kwz51d646oclw79mh/))*
+🎮 **[Play the Live Demo Here](#)** *([https://html5.gamemonetize.co/d7a965ple3vols2kwz51d646oclw79mh/](https://html5.gamemonetize.co/d7a965ple3vols2kwz51d646oclw79mh/))*
 
 ## ✨ Features
 
