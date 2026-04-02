@@ -1,76 +1,321 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Document</title>
+    <title>Ziply</title>
+
+    <script type="text/javascript">
+        window.SDK_OPTIONS = {
+            gameId: "d7a965ple3vols2kwz51d646oclw79mh", 
+            onEvent: function (a) {
+                switch (a.name) {
+                    case "SDK_GAME_PAUSE":
+                        // Pause the game when an ad shows
+                        if (typeof bgMusic !== 'undefined' && !bgMusic.paused) {
+                            bgMusic.pause();
+                        }
+                        break;
+                    case "SDK_GAME_START":
+                        // Resume music
+                        if (typeof bgMusic !== 'undefined' && typeof musicVolume !== 'undefined' && musicVolume > 0) {
+                            bgMusic.play().catch(e => e);
+                        }
+                        
+                        if (window.isWaitingForHint) {
+                            window.giveHint();
+                            window.isWaitingForHint = false;
+                        }
+                        break;
+                }
+            }
+        };
+        (function (a, b, c) {
+            var d = a.getElementsByTagName(b)[0];
+            a.getElementById(c) || (a = a.createElement(b), a.id = c, a.src = "https://api.gamemonetize.com/sdk.js", d.parentNode.insertBefore(a, d))
+        })(document, "script", "gamemonetize-sdk");
+    </script>
 </head>
+
 <body>
     <div id="home-screen">
         <div class="top-bar">
-            <h1>ziply puzzel</h1>
-            <div class="coin-display">⭐ <span id="coin-count">0</span></div>
-            <button id="setting-button">⚙️</button>
-        </div>
-        <div class="centre-content">
-            
-            <div class="slider-container">
-                <button class="slider-btn" id="prev-btn" onclick="slideTheme(-1)"> '<' </button>
-                <div class="theme-slider" id="theme-slider">
-                    <div class="theme-card" id="theme-clasic">  clasic
-                        <button class="theme-btn" onclick="handleTheme('clasic')">selected</button>
-                    </div>
-                    <div class="theme-card" id="theme-wood"> wood
-                        <button class="theme-btn" onclick="handleTheme('wood')">Unlock 5 ⭐</button>
-                    </div>
-                    <div class="theme-card" id="theme-ice"> ice 
-                        <button class="theme-btn" onclick="handleTheme('ice')">Lvl 3 Req</button> 
+            <div class="top-left" style="gap: 15px;">
+                <div class="profile-menu-container">
+                    <button id="profile-btn" class="glass-circle"><span id="profile-pic-btn">👤</span></button>
+                    <div id="profile-dropdown" class="glass-panel hidden">
+                        <div class="profile-header">
+                            <div class="avatar-large">👤</div>
+                            <div class="profile-info">
+                                <h3 id="player-name">Player</h3>
+                                <span id="player-title">Beginner</span>
+                            </div>
+                        </div>
 
-                    </div>
-                    <div class="theme-card" id="theme-glass"> glass
-                        <button class="theme-btn" onclick="handleTheme('glass')">Unlock 15 ⭐</button>  
+                        <hr class="glass-divider">
 
-                    </div>
-                    <div class="theme-card" id="theme-paper"> papre
-                        <button class="theme-btn" onclick="handleTheme('paper')">login for 7 days</button>  
+                        <div class="profile-stats">
+                            <p>🟩 5x5 Cleared: <span id="stat-5x5">0</span></p>
+                            <p>🟦 6x6 Cleared: <span id="stat-6x6">0</span></p>
+                            <p>🟪 8x8 Cleared: <span id="stat-8x8">0</span></p>
+                            <hr class="glass-divider">
+                            <p style="color: #ffdb58;">⚡ Rush Record: <span id="stat-rush">0</span></p>
+                            <p>🔥 Login Streak: <span id="stat-streak">0</span></p>
+                        </div>
 
+                        <hr class="glass-divider">
+
+                        <div class="profile-settings">
+                            <p
+                                style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #ffdb58; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                                🎵 Audio Controls
+                            </p>
+                            <div class="volume-control">
+                                <label for="bgm-volume">Music</label>
+                                <input type="range" id="bgm-volume" min="0" max="1" step="0.1" value="0.3">
+                            </div>
+                            <div class="volume-control">
+                                <label for="sfx-volume">SFX</label>
+                                <input type="range" id="sfx-volume" min="0" max="1" step="0.1" value="1.0">
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <button class="slider-btn" id="next-btn" onclick="slideTheme(1)"> '>' </button>
-                
+                <button class="glass-circle" onclick="openTutorial()">❓</button>
             </div>
-            <p class="swip-text">swip to change theme</p>
+
+            <div class="top-center">
+                <h1 class="game-title">ZIPLY</h1>
+            </div>
+            <div class="top-right">
+                <div class="coin-display">⭐ <span id="coin-count">0</span></div>
+            </div>
         </div>
+
+        <div class="centre-content">
+            <div class="slider-container">
+                <button class="slider-btn" id="prev-btn" onclick="slideTheme(-1)"> &#10094; </button>
+                <div class="theme-slider" id="theme-slider">
+
+                    <div class="theme-card" id="theme-clasic">
+                        <div class="theme-preview preview-clasic">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <h3>Classic</h3>
+                        <button class="theme-btn" onclick="handleTheme('clasic')">Selected</button>
+                    </div>
+
+                    <div class="theme-card" id="theme-wood">
+                        <div class="theme-preview preview-wood">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <h3>Wood</h3>
+                        <button class="theme-btn" onclick="handleTheme('wood')">Unlock 5 ⭐</button>
+                    </div>
+
+                    <div class="theme-card" id="theme-glass">
+                        <div class="theme-preview preview-glass">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <h3>Glass</h3>
+                        <button class="theme-btn" onclick="handleTheme('glass')">Unlock 15 ⭐</button>
+                    </div>
+
+                    <div class="theme-card" id="theme-ice">
+                        <div class="theme-preview preview-ice">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <h3>Ice</h3>
+                        <button class="theme-btn" onclick="handleTheme('ice')">Level 3 Required</button>
+                    </div>
+
+                    <div class="theme-card" id="theme-paper">
+                        <div class="theme-preview preview-paper">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                        <h3>Paper</h3>
+                        <button class="theme-btn" onclick="handleTheme('paper')">7 Logins Left</button>
+                    </div>
+
+                </div>
+                <button class="slider-btn" id="next-btn" onclick="slideTheme(1)"> &#10095; </button>
+            </div>
+            <p class="swip-text">swipe to change theme</p>
+        </div>
+
         <div class="bottom-bar">
-            <button class="primery-button" onclick="OpenLevelPage()">play</button>
-
+            <button class="primery-button" onclick="openModeSelect()">PLAY</button>
         </div>
-        
     </div>
 
-    <div id='level-screen' >
-        <div id="level-disply">
-
-
-        </div>
-        <div class="button-container">
-            <button class="primery-button" onclick="start()" >continue </button>
-            <button class="primery-button" onclick="backhome()">backhome</button>
-
+    <div id="mode-select-modal" class="glass-panel hidden-modal"
+        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; flex-direction: column; align-items: center; width: 90%; max-width: 450px;">
+        <div
+            style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 15px;">
+            <h2 style="margin: 0; color: #ffdb58; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">Select Mode</h2>
+            <button class="icon-btn" onclick="closeModeSelect()" style="padding: 5px 10px;">❌</button>
         </div>
 
+        <div class="mode-hub" style="padding: 0; width: 100%;">
+            <div class="mode-card" onclick="selectMode('5x5')">
+                <h3>Classic 5x5</h3>
+                <p>Unlocked</p>
+            </div>
+            <div class="mode-card locked-mode" id="card-6x6" onclick="unlockMode('6x6', 600)">
+                <h3>Advanced 6x6</h3>
+                <p>Unlock: 600 ⭐</p>
+            </div>
+            <div class="mode-card locked-mode" id="card-8x8" onclick="unlockMode('8x8', 800)">
+                <h3>Master 8x8</h3>
+                <p>Unlock: 800 ⭐</p>
+            </div>
+            <div class="mode-card" onclick="startTimeRush()">
+                <h3>⚡ Time Rush</h3>
+                <p>Unlocked</p>
+            </div>
+        </div>
     </div>
+
+    <div id="level-screen">
+        <div class="top-bar">
+            <div class="top-left">
+                <button class="icon-btn" onclick="backhome()">🔙</button>
+            </div>
+            <div class="top-center">
+                <h1 class="game-title">World 1</h1>
+            </div>
+            <div class="top-right">
+                <div class="coin-display">⭐ <span id="coin-count-level">0</span></div>
+            </div>
+        </div>
+
+        <div id="level-disply" class="saga-map"></div>
+
+        <div id="level-info-panel" class="level-info-panel hidden-modal">
+            <h2 id="selected-level-name">Level 1</h2>
+            <div class="level-stats">
+                <p>⏱️ Best: <span id="best-time">--:--</span></p>
+                <p>Rating: <span id="star-rating">☆☆☆</span></p>
+            </div>
+            <button class="primery-button" onclick="start()">PLAY NOW</button>
+        </div>
+    </div>
+
     <div id="game-screen">
-        <div id="grid">
-
+        <div class="top-bar">
+            <div class="top-left">
+                <button class="icon-btn" onclick="OpenLevelPage()">🔙</button>
+            </div>
+            <div class="top-center">
+                <h1 class="game-title" id="playing-level-name">Level X</h1>
+                <div id="game-timer"
+                    style="color: white; font-size: 24px; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-variant-numeric: tabular-nums;">
+                    00:00</div>
+                <div id="rush-score-display" style="display: none; color: #ffdb58; font-size: 20px; font-weight: bold;">
+                    Solved: <span id="rush-score">0</span></div>
+            </div>
+            <div class="top-right">
+                <button class="icon-btn" onclick="requestHint()" style="margin-right: 10px;">💡</button>
+                <button class="icon-btn" onclick="start()">🔄</button>
+            </div>
         </div>
-        <button class="primery-button" onclick="start()">reset</button>
-        <button class="primery-button" onclick="backhome()">go home</button>
-        <button class="primery-button" onclick="OpenLevelPage()">back</button>
 
+        <div class="board-container">
+            <div id="grid-wrapper">
+                <canvas id="pipe-canvas"></canvas>
+                <div id="grid"></div>
+            </div>
+        </div>
+
+        <div id="victory-modal" class="glass-panel"
+            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 9999; display: none; flex-direction: column; align-items: center; text-align: center; width: 80%; max-width: 350px;">
+            <h2 id="victory-title"
+                style="font-size: 32px; color: #ffdb58; margin: 0 0 10px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
+                Level Complete!</h2>
+            <div id="victory-stars" style="font-size: 45px; margin-bottom: 10px;">⭐⭐⭐</div>
+            <p style="font-size: 20px; font-weight: bold; margin-bottom: 25px;">Time: <span
+                    id="victory-time">00:00</span></p>
+
+            <div style="display: flex; gap: 15px; width: 100%;">
+                <button class="icon-btn" onclick="replayFromVictory()" style="flex: 1; font-size: 24px;">🔄</button>
+                <button class="primery-button" onclick="nextFromVictory()"
+                    style="flex: 2; margin: 0; padding: 12px; font-size: 20px;">Next ➡️</button>
+            </div>
+        </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <div id="tutorial-modal" class="level-info-panel hidden-modal"
+        style="z-index: 9999; text-align: center; width: 90%; max-width: 350px; padding: 20px;">
+        <h1 style="color: #ffdb58; margin-top: 0; margin-bottom: 15px; letter-spacing: 2px;">HOW TO PLAY</h1>
+
+        <div
+            style="overflow-y: auto; max-height: 25vh; text-align: left; color: white; font-size: 14px; font-weight: bold; line-height: 1.6; margin-bottom: 15px; padding-right: 10px; border-bottom: 1px solid rgba(255,255,255,0.2);">
+            <p>👆 <strong>SWIPE</strong> to draw a continuous pipe.</p>
+            <p>🔢 <strong>CONNECT</strong> the numbers in sequential order (Start at 1, go to 2, then 3...).</p>
+            <p>🏁 <strong>END</strong> on the highest number on the board.</p>
+            <p>🧱 <strong>AVOID</strong> the dark wall blocks. You cannot cross them.</p>
+            <p>🟩 <strong>FILL</strong> every single empty tile on the board to win!</p>
+        </div>
+
+        <p style="color: #00ffcc; margin: 0 0 10px 0; font-weight: bold; text-align: center;">Example Solution:</p>
+        <div class="demo-board">
+            <div class="demo-cell" style="color: #00ffcc;">1</div>
+            <div class="demo-cell"></div>
+            <div class="demo-cell"></div>
+
+            <div class="demo-cell demo-wall"></div>
+            <div class="demo-cell demo-wall"></div>
+            <div class="demo-cell"></div>
+
+            <div class="demo-cell" style="color: #ff1493;">3</div>
+            <div class="demo-cell"></div>
+            <div class="demo-cell" style="color: #ffdb58;">2</div>
+
+            <div class="demo-finger">👆</div>
+        </div>
+
+        <button class="theme-btn" style="width: 100%; font-size: 18px; padding: 12px; margin-top: 10px;"
+            onclick="closeTutorial()">I'm Ready!</button>
+    </div>
+
+    <div id="custom-alert" class="glass-panel hidden-modal"
+        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 80%; max-width: 320px; height: auto; padding: 30px;">
+        <p id="alert-text" style="font-size: 18px; font-weight: bold; margin-bottom: 25px; line-height: 1.4;"></p>
+        <button class="primery-button" style="margin: 0; padding: 12px 30px; font-size: 18px; width: 100%;"
+            onclick="closeAlert()">OK</button>
+    </div>
+
+    <div id="custom-confirm" class="glass-panel hidden-modal"
+        style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; text-align: center; width: 80%; max-width: 320px; height: auto; padding: 30px;">
+        <p id="confirm-text" style="font-size: 18px; font-weight: bold; margin-bottom: 25px; line-height: 1.4;"></p>
+        <div style="display: flex; gap: 15px; width: 100%;">
+            <button class="icon-btn"
+                style="flex: 1; font-size: 18px; background: rgba(255,100,100,0.3); border: 1px solid rgba(255,100,100,0.5); border-radius: 20px;"
+                onclick="closeConfirm(false)">Cancel</button>
+            <button class="primery-button" style="flex: 1; margin: 0; padding: 10px; font-size: 18px;"
+                onclick="closeConfirm(true)">Yes</button>
+        </div>
+    </div>
+
+    <script src="levels.js"></script>
+    <script src="script.js?v=2"></script> 
 </body>
+
 </html>

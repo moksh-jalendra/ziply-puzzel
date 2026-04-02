@@ -1,83 +1,206 @@
-/*                     theme engien           */
-/*                     theme engien           */
-
-:root{
-    --bg-color: #e0e0e0;
-    --cell-bg:#000000;
-    --text-color:#ffffff
+/* ==========================================
+   1. THEME ENGINE VARIABLES
+   ========================================== */
+:root {
+    --bg-color: #a6474792;
+    --cell-bg: #000000;
+    --text-color: #ffffff;
+    --path-color: #fefefd9c; /* Changed from orange to glowing Neon Mint! */
 }
 
-[data-theme="wood"]{
-    --bg-color:#f5ffdc;
-    --cell-bg:#8b4513;
-    --text-color:#ffffff;
-}
-[data-theme="ice"]{
-    --bg-color:#e0f7fa;
-    --cell-bg:#0288d1;
-    --text-color:#ffffff;
+[data-theme="wood"] {
+    --bg-color: #f5ffdc;
+    --cell-bg: #8b4513;
+    --text-color: #ffffff;
+    --path-color: #7efc008d;
 }
 
-[data-theme="glass"]{
-    --bg-color:#f0f8ff;
-    --cell-bg:rgba(255, 255, 255, 0.4);
-    --text-color:#333;
+[data-theme="ice"] {
+    --bg-color: #e0f7fa;
+    --cell-bg: #0288d1;
+    --text-color: #ffffff;
+    --path-color: #00ffff77;
 }
-[data-theme="paper"]{
-    --bg-color:#fdf5e6;
-    --cell-bg:#ece0d1;
-    --text-color:#2f4f4f;
-    border: 2px dashed #a0522d;
+
+[data-theme="glass"] {
+    --bg-color: #f0f8ff;
+    --cell-bg: rgba(255, 255, 255, 0.2); /* Made slightly more transparent for the glass effect */
+    --text-color: #333;
+    --path-color: #ff14919c;
 }
-/* [data-theme="wood"]{
-    --bg-color:
-    --cell-bg:
-    --text-color:
-} */
 
+[data-theme="paper"] {
+    --bg-color: #fdf5e6;
+    --cell-bg: transparent;
+    --text-color: #2f4f4f;
+   
+    --path-color: #1e37996d; /* Blue Ink */
+}
 
-
-
-/* global css */
-
-body , html{
+/* ==========================================
+   2. GLOBAL SETUP & ANIMATIONS
+   ========================================== */
+body, html {
     margin: 0;
     padding: 0;
     overflow: hidden;
     touch-action: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-/* game css */
+@keyframes pulseGlow {
+    0% { box-shadow: 0 8px 16px rgba(0,0,0,0.2), 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { box-shadow: 0 8px 16px rgba(0,0,0,0.2), 0 0 0 15px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 8px 16px rgba(0,0,0,0.2), 0 0 0 0 rgba(255, 255, 255, 0); }
+}
 
+@keyframes popIn {
+    0% { opacity: 0; transform: translate(-50%, -40%) scale(0.9); }
+    100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
 
-
-/*  ###################   home screen  #########                */
-/*  ###################   home screen  #########                */
-
-#home-screen{
+/* ==========================================
+   3. UNIFIED BACKGROUND SCREENS
+   ========================================== */
+#home-screen, #level-screen {
     height: 100dvh;
-    background-color: aquamarine;
-    display: flex;
+    background: linear-gradient(-45deg, #ffb7b2, #e284db, #89f7fe, #66a6ff);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
     flex-direction: column;
-    font-family: sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-.top-bar{
+#home-screen { display: flex; }
+#level-screen { display: none; }
+
+/* ==========================================
+   4. UI COMPONENTS (Top Bar & Menus)
+   ========================================== */
+.top-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 20px 0 20px;
-
 }
-#setting-button{
-    background: none;
+
+.top-left, .top-right { flex: 1; display: flex; }
+.top-right { justify-content: flex-end; }
+.top-center { flex: 2; text-align: center; }
+
+.game-title {
+    margin: 0;
+    font-size: 32px;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.coin-display {
+    background: rgba(0, 0, 0, 0.2);
+    color: #ffd700;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 18px;
+    backdrop-filter: blur(5px);
+}
+
+.icon-btn, .glass-circle {
+    background: rgba(255, 255, 255, 0.2);
     border: none;
-    font-size: 30px;
     cursor: pointer;
-
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s;
 }
-.centre-content{
+
+.icon-btn {
+    font-size: 20px;
+    padding: 10px 15px;
+    border-radius: 20px;
+}
+
+.glass-circle {
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.glass-circle:active { transform: scale(0.9); }
+
+/* ==========================================
+   5. PROFILE & AUDIO DROPDOWN
+   ========================================== */
+.profile-menu-container { position: relative; }
+
+.glass-panel {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    gap: 40px;
+    width: 220px;
+    height: 400px;
+    background: rgba(36, 64, 186, 0.311);
+    backdrop-filter: blur(2px);
+    border: 5px solid rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: white;
+    transition: opacity 0.3s, transform 0.3s;
+    transform-origin: top left;
+    z-index: 100;
+}
+
+.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+
+.profile-header { display: flex; align-items: center; gap: 15px; }
+.avatar-large { font-size: 30px; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 50%; }
+.profile-info h3 { margin: 0; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.profile-info span { font-size: 12px; color: #ffd700; }
+.glass-divider { border: 0; height: 1px; background: rgba(255, 255, 255, 0.3); margin: 15px 0; }
+.profile-stats p { margin: 5px 0; font-size: 14px; font-weight: bold; }
+
+.volume-control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.volume-control label { width: 30%; }
+.volume-control input[type="range"] {
+    width: 65%;
+    cursor: pointer;
+    accent-color: #ffdb58;
+    height: 6px;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+/* ==========================================
+   6. THEME SHOP SLIDER
+   ========================================== */
+.centre-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -86,196 +209,412 @@ body , html{
     width: 100%;
 }
 
-.game-title{
-    margin: 0;
-    font-size: 40px;
-    color: bisque;
-    letter-spacing: 2px;
-}
-.theme-slider{
+.theme-slider {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     width: 100%;
     padding: 20px 0;
     scrollbar-width: none;
-   
 }
+.theme-slider::-webkit-scrollbar { display: none; }
 
-.theme-slider::-webkit-scrollbar{
-    display: none;
-}
-
-.theme-card{
+.theme-card {
     min-width: 60vw;
     height: 60vw;
     max-width: 250px;
     max-height: 250px;
-    margin: 0 50%;
+    margin: 0 20%;
     scroll-snap-align: center;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    font-size: 28px;
-    font-weight: bold;
-    box-shadow: 0 8px 16px rgb(149, 52, 52);
-    flex-shrink: 0;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-
-}
-
-.theme-btn{
-    background-color: #333;
-    color: wheat;
-    border: none;
-    padding: 10px 20px ;
-    font-size: 16px;
     border-radius: 20px;
-    cursor: pointer;
-}
-.theme-btn:active{
-    transform: scale(0.95);
-}
-
-#theme-clasic{
-    background-image: url('sample.jpeg');
-}
-
-.swip-text{
-    margin-top: 15px;
-    font-size: 14px;
-    color: rgb(143, 96, 35);
-    font-weight: bold;
-}
-.bottom-bar{
-    padding: 20px;
     display: flex;
-    justify-content: center;
-}
-.primery-button{
-    background-color: red;
-    color: white;
-    border: none;
-    width: 80%;
-    max-width: 300px;
-    padding: 20PX;
-    font-size: 24PX;
-    font-weight: bold;
-    border-radius: 30px;
-    margin-bottom: 40px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px red;
-}
-
-.primery-button:active{
-    transform: scale(0.95);
-}
-
-.slider-container{
-    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    width: 100%;
-    position: relative;
+    justify-content: space-evenly;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
 }
 
-.slider-btn{
-    display: none;background-color: blueviolet;
-    color: white;
+.theme-btn {
+    background-color: #ffffff;
+    color: #333;
     border: none;
-    font-size: 30px;
-    padding: 15px 20px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.theme-btn:active { transform: scale(0.95); }
+
+.swip-text { margin-top: 15px; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; letter-spacing: 1px; }
+
+.slider-container { display: flex; align-items: center; justify-content: center; width: 100%; position: relative; }
+.slider-btn {
+    display: none;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    color: white;
+    border: 1px solid white;
+    font-size: 20px;
+    padding: 15px;
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
     z-index: 10;
-    transition: background-color 0.2s;
 }
-.slider-btn:hover{
-    background-color: chartreuse;
-}
+#prev-btn { left: 5%; }
+#next-btn { right: 5%; }
 
-#prev-btn{left: 15%;}
-#next-btn{right: 15%;}
-
-@media(min-width : 768px){
-    .slider-btn{
-        display: block;
-    }
-    .theme-card{
-        min-width: 40vw;
-        min-height: 60hw;
-        max-width: 250px;
-        max-height: 250px;
+@media(min-width : 768px) {
+    .slider-btn { display: block; }
+    .theme-card {
+        min-width: 40vw; min-height: 60hw;
+        max-width: 250px; max-height: 250px;
         margin: 0 50%;
     }
 }
 
+/* ==========================================
+   7. MAIN BUTTONS & BOTTOM BAR
+   ========================================== */
+.bottom-bar { padding: 30px; display: flex; justify-content: center; }
 
-
- /*                 level scren              */
-
-
-
-#level-screen{
-    height: 100dvh;
-    background-color: aquamarine;
-    display: none;
-    flex-direction: column;
-    font-family: sans-serif;
-}
-
-.levelbox{
-    padding: 20px;
-    margin: 10px;
-    background-color: white;
-    border: 2px solid goldenrod;
-    border-radius: 30px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    text-align: center;
-}
-
- /* coin */
-.coin-display{
+.primery-button {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 2px solid white;
+    color: white;
+    width: 80%;
+    max-width: 300px;
+    padding: 18px;
     font-size: 24px;
-    font-weight: bold;
-    background: rgba(0,0,0,0.1);
-    padding: 5px 15px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    border-radius: 40px;
+    cursor: pointer;
+    margin-bottom: 50%;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: background 0.3s;
+    animation: pulseGlow 2s infinite;
+}
+.primery-button:hover { background: rgba(255, 255, 255, 0.4); }
+.primery-button:active { transform: scale(0.95); }
+
+/* ==========================================
+   8. SAGA MAP (Level Select)
+   ========================================== */
+.saga-map {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 40px 0 220px 0;
+    scrollbar-width: none;
+}
+.saga-map::-webkit-scrollbar { display: none; }
+
+.levelbox {
+    width: 70px;
+    height: 70px;
+    margin: 15px 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 900;
+    color: #444;
+    background: #ffffff;
+    box-shadow: 0 6px 0 #b3b3b3, 0 10px 15px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+.levelbox:active { transform: translateY(4px); box-shadow: 0 2px 0 #b3b3b3, 0 4px 5px rgba(0,0,0,0.2); }
+.levelbox:nth-child(even) { margin-left: -80px; }
+.levelbox:nth-child(odd) { margin-left: 80px; }
+
+.levelbox.locked { background: #888; box-shadow: 0 6px 0 #555; color: #ccc; cursor: not-allowed; }
+.levelbox.selected { background: #ffdb58; box-shadow: 0 6px 0 #d4af37, 0 0 20px rgba(255, 219, 88, 0.8); border: 3px solid white; color: white; }
+
+.level-info-panel {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 20px 30px;
     border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    display: flex; flex-direction: column; align-items: center;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%; max-width: 400px;
+    z-index: 100;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
+#selected-level-name { margin: 0; color: white; font-size: 28px; text-shadow: 1px 1px 3px rgba(0,0,0,0.4); letter-spacing: 2px; }
+.level-stats { display: flex; gap: 30px; color: #fff; font-size: 16px; font-weight: bold; margin: 10px 0 20px 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
 
-
-
-/* #################       game scerrn      #########################    */
-/* #################       game scerrn      #########################    */
-
-#game-screen{
-    flex-direction: column;
+/* ==========================================
+   9. GAME PLAY SCREEN & GRID
+   ========================================== */
+#game-screen {
     height: 100dvh;
     background-color: var(--bg-color);
     display: none;
+    flex-direction: column;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-#grid{
-    background-color: var(--bg-color);
+.board-container { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 20px; }
+
+#grid-wrapper {
+    position: relative;
+    width: 90vmin; max-width: 450px;
+    height: 90vmin; max-height: 450px;
+}
+
+#pipe-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+#grid {
+    width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+    padding: 15px; border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(5,60px);
-    grid-template-rows: repeat(5,60px);
-    gap: 5px;
+    gap: 8px;
     touch-action: none;
 }
 
-.cell{
-    width: 60px;
-    height: 60px;
-
+.cell {
     background-color: var(--cell-bg);
-    border-radius: 6px;
+    border-radius: 12px;
     color: var(--text-color);
+    display: flex; justify-content: center; align-items: center;
+    font-size: clamp(24px, 6vmin, 36px); font-weight: 900;
+    z-index: 20;
+}
+
+.cell.active-path {
+    background-color: var(--path-color) !important;
+    color: white !important;
+}
+
+.wall {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    pointer-events: none; 
+    color: transparent;
+}
+
+#victory-modal { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+
+.hidden-modal { display: none !important; }
+.hidden-overlay { display: none !important; }
+
+/* ==========================================
+   10. MODE HUB UI
+   ========================================== */
+.mode-hub {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px 30px 40px 30px;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+.mode-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    padding: 15px 10px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background 0.2s;
+}
+.mode-card:active { transform: scale(0.95); }
+.mode-card h3 { margin: 0 0 5px 0; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+.mode-card p { margin: 0; font-size: 14px; color: #ffdb58; font-weight: bold; }
+
+.locked-mode { background: rgba(0, 0, 0, 0.4); border-color: #555; color: #aaa; }
+.locked-mode p { color: #ff6b6b; } 
+
+@keyframes panicPulse {
+    0% { color: white; transform: scale(1); }
+    50% { color: #ff4081; transform: scale(1.1); }
+    100% { color: white; transform: scale(1); }
+}
+.panic-time { animation: panicPulse 0.5s infinite !important; }
+
+/* ==========================================
+   11. THEME SHOP 2x2 PREVIEWS
+   ========================================== */
+.theme-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4px;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px auto;
+    padding: 4px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.theme-preview div {
+    border-radius: 4px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.preview-clasic div { background-color: #333; border: 1px solid #555; }
+.preview-wood div { background-color: #8b5a2b; border: 1px solid #5c3a21; }
+
+/* Upgraded Glass Preview */
+.preview-glass div { 
+    background-color: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(4px); 
+    border: 2px solid rgba(255, 255, 255, 0.9); /* Sharp bright outline! */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.preview-ice div { background-color: #e0ffff; border: 1px solid #00bfff; box-shadow: 0 0 5px rgba(0, 191, 255, 0.5); }
+.preview-paper div { background-color: #fdf5e6; border: 1px solid #ccc; box-shadow: none; }
+
+/* ==========================================
+   12. EXTRA THEME SPECIFICS (Glass & Paper)
+   ========================================== */
+
+/* Upgraded Actual Glass Theme Game Grid */
+body[data-theme="glass"] .cell {
+    border: 1px solid rgba(255, 255, 255, 0.8) !important;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0,0,0,0.05) !important;
+    backdrop-filter: blur(10px);
+}
+
+/* Notebook Paper Aesthetic Rules */
+body[data-theme="paper"] {
+    background-color: #fdf5e6 !important; 
+    background-image: 
+        linear-gradient(90deg, transparent 40px, #ff6b6b 40px, #ff6b6b 42px, transparent 42px), 
+        repeating-linear-gradient(transparent, transparent 30px, #a4b0be 30px, #a4b0be 31px) !important;
+    background-attachment: fixed !important;
+    color: #2f3542 !important; 
+    text-shadow: none !important;
+}
+
+body[data-theme="paper"] * {
+    text-shadow: none !important;
+}
+
+body[data-theme="paper"] .container,
+
+body[data-theme="paper"] .mode-card,
+body[data-theme="paper"] .glass-panel {
+    border: 2px solid #ced6e0 !important; 
+    background: rgba(255, 255, 255, 0.7) !important; 
+    box-shadow: none !important;
+}
+
+body[data-theme="paper"] .cell {
+    background: transparent !important;
+    border: 2px solid #747d8c !important;
+    color: #2f3542 !important;
+    font-weight: bold;
+}
+
+body[data-theme="paper"] .wall {
+    background: #a4b0be !important; 
+}
+body[data-theme="paper"] .bottom-bar {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ==========================================
+   13. ANIMATED GHOST FINGER TUTORIAL
+   ========================================== */
+.demo-board {
+    display: grid;
+    grid-template-columns: repeat(3, 45px);
+    grid-template-rows: repeat(3, 45px);
+    gap: 6px;
+    position: relative;
+    margin: 0 auto 20px auto;
+    width: max-content;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.demo-cell {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 900;
+    font-size: 20px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.demo-wall {
+    background: rgba(0, 0, 0, 0.8);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+.demo-finger {
+    position: absolute;
+    font-size: 40px;
+    top: 15px; /* Centers the finger over the first tile */
+    left: 15px;
+    pointer-events: none;
+    z-index: 10;
+    filter: drop-shadow(0px 8px 6px rgba(0,0,0,0.5));
+    animation: swipeGesture 3s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The exact path the finger takes! */
+@keyframes swipeGesture {
+    0% { transform: translate(0px, 0px) scale(1.4); opacity: 0; }
+    10% { transform: translate(0px, 0px) scale(1); opacity: 1; } /* Press down on 1 */
+    30% { transform: translate(102px, 0px) scale(1); opacity: 1; } /* Swipe Right */
+    50% { transform: translate(102px, 102px) scale(1); opacity: 1; } /* Swipe Down to 2 */
+    70% { transform: translate(0px, 102px) scale(1); opacity: 1; } /* Swipe Left to 3 */
+    80% { transform: translate(0px, 102px) scale(1.4); opacity: 0; } /* Lift finger */
+    100% { transform: translate(0px, 0px) scale(1.4); opacity: 0; }
+}
+
+/* ==========================================
+   14. HINTS & LEVEL 1 TUTORIAL ANIMATIONS
+   ========================================== */
+.hint-glow {
+    box-shadow: 0 0 20px 10px #ffdb58, inset 0 0 10px #ffdb58 !important;
+    animation: panicPulse 0.5s infinite;
+    z-index: 100;
 }
 
